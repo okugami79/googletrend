@@ -1,6 +1,7 @@
 
 gettrend<-function(keyword="boston", ...) 
 {
+  browser()
   
   if( is.null(.googletrend$ch) ) stop(' |- ## ERROR : please, login at first! ### ')
       
@@ -15,7 +16,6 @@ gettrend<-function(keyword="boston", ...)
   {
     # Parse resonse and store in CSV
     # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date
-    x <- try( read.table(text=res, sep=",", col.names=c("Week", "TrendsCount"), skip=5, nrows=503) )
     
     # convert to ordinary data frame 
     x <- try( read.table(text=res, sep=",", col.names=c("week", "index"), skip=5, nrows=503) )
@@ -25,6 +25,7 @@ gettrend<-function(keyword="boston", ...)
     x[,1] <- as.Date( date[,1] ) 
     
     plot(x, type='l') 
+    title(keyword) 
     
     return(x)    
   }

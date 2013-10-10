@@ -1,6 +1,9 @@
 login <- function(gmail, password) 
 {
- 
+  # delete previously created cookie 
+  if(file.exists('./cookies')) 
+    file.remove('./cookies')
+  
   # Load required libraries
   library(RCurl)  	# For getURL() and curl handler / cookie / google login
   library(stringr)	# For str_trim() to trip whitespace from strings
