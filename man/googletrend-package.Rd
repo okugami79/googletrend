@@ -31,5 +31,5 @@ Maintainer: <chris.okugami@csiro.au>
  
 \examples{
 ?googletrend::login 
-?googletrend::getdata 
+?googletrend::gettrend 
 }
