@@ -1,9 +1,9 @@
+
 gettrend<-function(keyword="boston", ...) 
 {
-  if( is.null(.googletrend$ch) ) stop(' |- please, login at first! ')
-    
-  browser()
   
+  if( is.null(.googletrend$ch) ) stop(' |- ## ERROR : please, login at first! ### ')
+      
   trendsURL <- "http://www.google.com/trends/trendsReport"
   
   res <- getForm(trendsURL, q=keyword, ..., content="1", export="1", curl=.googletrend$ch)
@@ -18,8 +18,16 @@ gettrend<-function(keyword="boston", ...)
     x <- try( read.table(text=res, sep=",", col.names=c("Week", "TrendsCount"), skip=5, nrows=503) )
     
     # convert to ordinary data frame 
+    x <- try( read.table(text=res, sep=",", col.names=c("week", "index"), skip=5, nrows=503) )
+        
+    date <- do.call(rbind, (strsplit( x[,1], ' - ' ) ) ) 
+    date[,1]
+    x[,1] <- as.Date( date[,1] ) 
+    
+    plot(x, type='l') 
     
     return(x)    
   }
-}
+  
+} # f( gettrend ) 
 

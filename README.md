@@ -1,5 +1,6 @@
 googletrend
 ===========
+https://github.com/okugami79/googletrend
 
 R package - 2013 google trend 
 
