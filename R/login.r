@@ -21,14 +21,26 @@ login <- function(gmail, password)
   ############################################
   .googletrend$ch <- getCurlHandle()
   
-  curlSetOpt(curl = .googletrend$ch,
-             ssl.verifypeer = FALSE,
-             useragent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13",
-             timeout = 60,
-             followlocation = TRUE,
-             cookiejar = "./cookies",
-             cookiefile = "./cookies")
+# OLD VERSION 
+ curlSetOpt(curl = .googletrend$ch,
+            ssl.verifypeer = FALSE,
+            useragent = "Mozilla/5.0",
+            timeout = 60,
+            followlocation = TRUE,
+            cookiejar = "./cookies",
+            cookiefile = "./cookies")
   
+
+# # CHRIS NEW VERSION 
+#   curlSetOpt(curl = .googletrend$ch,
+# #             ssl.verifypeer = FALSE,
+#              useragent = "Mozilla/5.0",
+#              timeout = 60,
+#              followlocation = TRUE,
+#              cookiejar = "./cookies"
+# #             cookiefile = "./cookies"
+# )
+# 
   
   ## Perform Google Account login
   tryCatch(
@@ -50,9 +62,12 @@ login <- function(gmail, password)
       & getCurlInfo(.googletrend$ch)$response.code == 200) {
      message(" |- *** :) Google login successful :) *** ")
      message(" |- ")
-     message(sprintf(" |- IP: %s", getCurlInfo(.googletrend$ch)$primary.ip ))
+     message(sprintf(" |- IP: %s", getCurlInfo(.googletrend$ch)$primary.ip )) 
+     
+     save(.googletrend, file='googletrendx') 
+
   } else {
-    error("Google login _not_ successful. Check your login credentials!")
+    message("Google login _not_ successful. Check your login credentials!")
   }
   
 },
@@ -64,5 +79,4 @@ error=function(e)
 
     ) # tryCatch 
 }
-
 
