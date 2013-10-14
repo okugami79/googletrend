@@ -2,6 +2,6 @@
 {
   
   .googletrend <<- new.env()
-  .googletrend$ch <<- NULL 
+  .googletrend$ch <- NULL 
   
 }

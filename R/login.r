@@ -14,6 +14,7 @@ login <- function(gmail, password)
   
   # URLs
   loginURL <- "https://accounts.google.com/accounts/ServiceLogin"
+  loginURL <- "http://gmail.com"
   authenticateURL <- "https://accounts.google.com/accounts/ServiceLoginAuth"
   
   ############################################
@@ -22,13 +23,21 @@ login <- function(gmail, password)
   .googletrend$ch <- getCurlHandle()
   
 # OLD VERSION 
- curlSetOpt(curl = .googletrend$ch,
-            ssl.verifypeer = FALSE,
-            useragent = "Mozilla/5.0",
-            timeout = 60,
-            followlocation = TRUE,
-            cookiejar = "./cookies",
-            cookiefile = "./cookies")
+#  curlSetOpt(curl = .googletrend$ch,
+#             ssl.verifypeer = FALSE,
+#             useragent = "Mozilla/5.0",
+#             timeout = 60,
+#             followlocation = TRUE,
+#             cookiejar = "./cookies",
+#             cookiefile = "./cookies")
+
+  curlSetOpt(curl = .googletrend$ch,
+             ssl.verifypeer = FALSE,
+             useragent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13",
+             timeout = 60,
+             followlocation = TRUE,
+             cookiejar = "./cookies",
+             cookiefile = "./cookies")
   
 
 # # CHRIS NEW VERSION 
@@ -78,5 +87,7 @@ error=function(e)
 }
 
     ) # tryCatch 
-}
+  
+} # fun(login)
+
 

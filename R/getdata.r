@@ -19,10 +19,10 @@ gettrend<-function(keyword="boston", ...)
     
     # convert to ordinary data frame 
     x <- try( read.table(text=res, sep=",", col.names=c("week", "index"), skip=5, nrows=503) )
-        
+    x[,1] <- as.character(x[,1])
     date <- do.call(rbind, (strsplit( x[,1], ' - ' ) ) ) 
-    date[,1]
     x[,1] <- as.Date( date[,1] ) 
+
     
     plot(x, type='l') 
     title(keyword) 
