@@ -34,9 +34,13 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE)
           
   utils::browseURL(trendsURL)
   
+  retry=0
   while ( !file.exists(REPORT.PATH) ) 
   {
     Sys.sleep(1)
+    retry<-retry+1 
+    if(retry > 8) 
+      stop(" |- DID YOU LOGIN your gmail/gtrend account ??? : see http://www.google.com/trends/")
   } 
     
   # All succeed case 
