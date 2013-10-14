@@ -11,33 +11,27 @@ login <- function(gmail, password)
   # Google account settings
   username <- gmail
   password <- password
+  c_file <- './cookies'
   
   # URLs
   loginURL <- "https://accounts.google.com/accounts/ServiceLogin"
-  loginURL <- "http://gmail.com"
+  # loginURL <- "http://gmail.com"
   authenticateURL <- "https://accounts.google.com/accounts/ServiceLoginAuth"
-  
+
   ############################################
   ## Perform Google login and get cookies ready
-  ############################################
-  .googletrend$ch <- getCurlHandle()
-  
-# OLD VERSION 
-#  curlSetOpt(curl = .googletrend$ch,
-#             ssl.verifypeer = FALSE,
-#             useragent = "Mozilla/5.0",
-#             timeout = 60,
-#             followlocation = TRUE,
-#             cookiejar = "./cookies",
-#             cookiefile = "./cookies")
-
+  ############################################  
+  if (file.exists(c_file))
+  .googletrend$ch <- getCurlHandle(cookiefile=c_file, cookiejar=c_file) else 
+    .googletrend$ch <- getCurlHandle()
+    
   curlSetOpt(curl = .googletrend$ch,
              ssl.verifypeer = FALSE,
              useragent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13",
              timeout = 60,
              followlocation = TRUE,
-             cookiejar = "./cookies",
-             cookiefile = "./cookies")
+             cookiejar = c_file,
+             cookiefile = c_file)
   
 
 # # CHRIS NEW VERSION 
@@ -54,7 +48,7 @@ login <- function(gmail, password)
   ## Perform Google Account login
   tryCatch(
 {
-  loginPage <- getURL(loginURL, curl=.googletrend$ch)
+  loginPage <- getURL(loginURL, curl=.googletrend$ch, verbose=TRUE) 
   
   galx.match <- str_extract(string = loginPage,
                             pattern = ignore.case('name="GALX"\\s*value="([^"]+)"'))
@@ -84,6 +78,9 @@ error=function(e)
 {
   message( ' |-  googletrend; error establishing connection !!### ') 
   message( ' |-   Are your gmail account and password correct? ')
+  
+  # clean up old cookie file 
+  file.remove(c_file)
 }
 
     ) # tryCatch 

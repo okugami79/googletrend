@@ -1,18 +1,23 @@
 
 gettrend<-function(keyword="boston", ...) 
 {
-  browser()
+  # browser()
   
   if( is.null(.googletrend$ch) ) stop(' |- ## ERROR : please, login at first! ### ')
       
   trendsURL <- "http://www.google.com/trends/trendsReport"
   
-  res <- getForm(trendsURL, q=keyword, ..., content="1", export="1", curl=.googletrend$ch)
+  res <- getForm(trendsURL, q=keyword, content="1", export="1", curl=.googletrend$ch, verbose=TRUE, ...)
   
   # Check if quota limit reached
-  if( grepl( "You have reached your quota limit", res ) ) {
-    message( " |- ## ERROR : Quota limit reached; ### :(  " ) 
-  } else 
+  if( grepl( "You have reached your quota limit", res ) )
+    return( " |- ## ERROR : Quota limit reached; ### :(  " ) 
+
+  if ( grepl('An error has been detected', res) )
+    return(' |- ## ERROR : An error has been detected ### :(  ')
+  
+  
+  # All succeed case 
   {
     # Parse resonse and store in CSV
     # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date
