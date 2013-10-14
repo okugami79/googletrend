@@ -6,31 +6,37 @@ R package - 2013 google trend
 
 About
 ----
-We need new package so we can grab google trend data in R console session. 
+We need new package so we can grab google trend data in R console session. This implementation doesn't use RCurl, but it uses your default web browser (Google Chrome, Firefox etc.)
  
-
 Example 
 ----
-
-login(gmail='mx@gmail.com', password='xyz') 
-
-# run index of Google trend keyword boston
-BOSTON.INDEX <- gettrend(q='boston')
-
+\# run index of Google trend keyword boston
+BOSTON.INDEX <- gettrend(keyword='boston')
 plot(BOSTON.INDEX)
 
 
-# AU(Australia) region of firework query 
-FIREWORK.INDEX <- gettrend(q='firework', geo='AU' )
+\# run index of Google trend keyword boston only year 2013
+BOSTON.INDEX <- gettrend(keyword='boston', year=2013)
+plot(BOSTON.INDEX)
 
+
+\# AU(Australia) region of firework query 
+FIREWORK.INDEX <- gettrend('firework', geo='AU' )
 plot(FIREWORK.INDEX)
+
+\# AU(Australia, NSW) region of firework query 
+FIREWORK.INDEX <- gettrend('firework', geo='AU-NSW' )
+plot(FIREWORK.INDEX)
+
 
 Note 
 ----
 
+If your web browser uses different Download directory, use to change it. 
+setdownloaddir('my new path to browser download directory' )
+
 
 Reference
 -----
-I took christoph's example, put it around R package framework, add spatial parameter to select to work with location specific google trend index. 
-Christoph Riedl - http://christophriedl.net/2013/08/22/google-trends-with-r/ 
+Use web browser cookie mechanism to connect google trend, then download trend file. 
 
