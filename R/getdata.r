@@ -1,6 +1,6 @@
 # NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
 
-gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE) 
+gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE) 
 {
   require(utils)
 
@@ -21,6 +21,8 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE)
     {
       REPORT.PATH<-paste(DOWNLOADDIR, 'report', sep='/' )
       REPORT.PATH<-sprintf('%s (%d).csv', REPORT.PATH, NEXT.REPORT.ID)
+      message(paste('download csv file path:', REPORT.PATH))
+      REPORT.PATH <<- REPORT.PATH 
     }
    
   # CONSTRUCT GOOGLE TREND QUERY  
@@ -47,22 +49,11 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE)
   # All succeed case 
   {
     # Parse resonse and store in CSV
-    # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date    
-    x<- read.csv(file=REPORT.PATH, skip=5, nrows=503,col.names=c("week", "index"))
-    REPORT.PATH <<- REPORT.PATH
-    
-    # convert to ordinary data frame 
-    x[,1] <- as.character(x[,1])
-    date <- do.call(rbind, (strsplit( x[,1], ' - ' ) ) ) 
-    x[,1] <- as.Date( date[,1] ) 
-     
-    if(plot)
-    {
-      plot(x, type='l') 
-      title(paste(keyword, geo, year) )        
-    }
-    
-    return(x)    
+    # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date
+    x<-datareader(file=REPORT.PATH)   
+    if( !is.null(x) & simple ) 
+      return(x$trend) else 
+        return(x)    
   }
   
 } # f( gettrend ) 
