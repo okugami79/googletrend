@@ -1,7 +1,7 @@
 googletrend
 ===========
 https://github.com/okugami79/googletrend
-WORDPRESS REFERENCE OF HOW TO SET UP HERE 
+ 
 
 R package - importing Google trend data to your R session :)   
 
@@ -13,6 +13,7 @@ Something I like to share with R data analytic community.
   
 Example 
 ----
+
 \# run index of Google trend keyword boston
 
 BOSTON.INDEX <- gettrend(keyword='boston')
@@ -39,16 +40,30 @@ plot(FIREWORK.INDEX)
 
 Installation 
 ----
-1. Download http://github.com/okugami79/googletrend/tar/googletrend_1.0.tar.gz to your computer
-2. Install this package from RGUI or rstudio, install from file.  
-3. sign in to your web browser http:/google.com/trends 
-4. library(googletrend)
-5. x = gettrend(keyword='boston')
-   Does it works? 
-   5.1: check your browsers *cookie* setting 
-   5.2: check where is your browser's default downloads directory (Our packages uses $HOME/Downloads), it's different to user download directory. use *googletrend::setdownloaddir* to specify your location
-   5.3  If this doesn't work, contact me!  
-   
+require(devtools) 
+
+install_github('googletrend','okugami79')
+
+library(googletrend)
+
+# Open your default web browser like, chrome, firefox. 
+# NOW sign in your gmail account at  http://google.com/trends 
+
+go back to R, again, type following 
+
+> dat <- gettrend('boston')
+download csv file path: C:\Users\oku003/Downloads/report (57).csv
+TOP.REGION.IDX 513 TOP.SUBREGION.IDX  TOP.CITY.IDX 637 TOP.SEARCH.IDX 648 RISING.SEARCH.IDX 699
+> 
+> head(dat)
+        week index
+1 2004-01-11    12
+2 2004-01-18    12
+3 2004-01-25    12
+4 2004-02-01    13
+5 2004-02-08    13
+6 2004-02-15    12
+
 
 Note 
 ----
