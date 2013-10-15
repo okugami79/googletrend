@@ -1,3 +1,4 @@
+# NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
 
 gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE) 
 {
@@ -48,6 +49,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE)
     # Parse resonse and store in CSV
     # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date    
     x<- read.csv(file=REPORT.PATH, skip=5, nrows=503,col.names=c("week", "index"))
+    REPORT.PATH <<- REPORT.PATH
     
     # convert to ordinary data frame 
     x[,1] <- as.character(x[,1])
