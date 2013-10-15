@@ -7,8 +7,10 @@ R package - importing Google trend data to your R session :)
 
 About
 ----
-I got sick of tired of clicking manual download of Googletrend data on web site. Spent investigate alternative way of doing data analysis with GoogleTrend, ended up writing new package, something I like to share with R data analytic community.   
- 
+Have you got tired of clicking manual download of Googletrend data from the web site for your data analysis? This package help you importing data to R. 
+
+Something I like to share with R data analytic community.   
+  
 Example 
 ----
 \# run index of Google trend keyword boston
@@ -37,13 +39,15 @@ plot(FIREWORK.INDEX)
 
 Installation 
 ----
-1. login to your web browser http:/google.com/trends 
-2. library(googletrend)
-3. x = gettrend(keyword='boston')
+1. Download http://github.com/okugami79/googletrend/tar/googletrend_1.0.tar.gz to your computer
+2. Install this package from RGUI or rstudio, install from file.  
+3. sign in to your web browser http:/google.com/trends 
+4. library(googletrend)
+5. x = gettrend(keyword='boston')
    Does it works? 
-   3.1: check your browsers *cookie* setting 
-   3.2: check where is your browser's default downloads directory (Our packages uses $HOME/Downloads), it's different to user download directory. use *googletrend::setdownloaddir* to specify your location
-   3.3  If this doesn't work, contact me!  
+   5.1: check your browsers *cookie* setting 
+   5.2: check where is your browser's default downloads directory (Our packages uses $HOME/Downloads), it's different to user download directory. use *googletrend::setdownloaddir* to specify your location
+   5.3  If this doesn't work, contact me!  
    
 
 Note 
