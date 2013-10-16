@@ -55,11 +55,12 @@ library(googletrend)
 </pre>
 go back to R, again, type following 
 
-<pre>
+
 dat <- gettrend('boston')
-download csv file path: C:\Users\oku003/Downloads/report (57).csv
-TOP.REGION.IDX 513 TOP.SUBREGION.IDX  TOP.CITY.IDX 637 TOP.SEARCH.IDX 648 RISING.SEARCH.IDX 699
+
 head(dat)
+
+<pre>
         week index
 1 2004-01-11    12
 2 2004-01-18    12
@@ -67,7 +68,8 @@ head(dat)
 4 2004-02-01    13
 5 2004-02-08    13
 6 2004-02-15    12
-</pre>
+</pre> 
+
 
 Note 
 ----
