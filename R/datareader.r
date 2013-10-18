@@ -78,9 +78,9 @@ datareader <- function(file)
   }else 
     ret$top.region <- NULL 
   
-  MIN.IDX<-min(TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)      
-  if(length(TOP.CITY.IDX) > 0 & length(MIN.IDX) > 0 )
+  if(length(TOP.CITY.IDX) > 0 & length(RISING.SEARCH.IDX) > 0 )
   {
+    MIN.IDX<-min(TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)        
     ret$top.city <- .parse.top.region(x,
                                   start.idx=TOP.CITY.IDX,
                                   end.idx=MIN.IDX )    
