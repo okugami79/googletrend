@@ -1,23 +1,32 @@
 # NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
-
+# mod: chriso nov-13: first usage of google trend report file issue 
+# 
 gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE) 
 {
   require(utils)
 
   #DOWNLOAD FILE NAMES 
   DOWNLOADDIR=.googletrend$DOWNLOADDIR    
-  REPORTFILES=dir(DOWNLOADDIR, pattern='report')  
-  REPORTFILES=REPORTFILES[grep('.csv', REPORTFILES)]
+  REPORTFILES=dir(DOWNLOADDIR, pattern='^report*.csv')  
   
-  # finding next report number  
-  X<-gsub('report', '', REPORTFILES ) 
-  X<-gsub('.csv', '', X ) 
-  X<-gsub('\\(', '', X ) 
-  X<-gsub('\\)', '', X ) 
-  NEXT.REPORT.ID<-max( as.numeric(X), na.rm=T ) + 1
-  
-  if(is.na(NEXT.REPORT.ID))
-    REPORT.PATH<-paste(DOWNLOADDIR, NEWREPORTFILES, sep='/') else
+  if( length(REPORTFILES) > 0 )
+  {
+    REPORTFILES=REPORTFILES[grep('.csv', REPORTFILES)]
+    
+    # finding next report number
+    X<-gsub('report', '', REPORTFILES ) 
+    X<-gsub('.csv', '', X ) 
+    X<-gsub('\\(', '', X ) 
+    X<-gsub('\\)', '', X ) 
+    NEXT.REPORT.ID<-max( as.numeric(X), na.rm=T ) + 1    
+  } else 
+  {
+    # first time to download
+    NEXT.REPORT.ID <- 0 
+  }
+    
+  if( NEXT.REPORT.ID == 0)
+    REPORT.PATH<-paste(DOWNLOADDIR, "report.csv", sep='/') else
     {
       REPORT.PATH<-paste(DOWNLOADDIR, 'report', sep='/' )
       REPORT.PATH<-sprintf('%s (%d).csv', REPORT.PATH, NEXT.REPORT.ID)
