@@ -4,32 +4,37 @@
 gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE) 
 {
   require(utils)
-
+ 
   #DOWNLOAD FILE NAMES 
   DOWNLOADDIR=.googletrend$DOWNLOADDIR    
 
-  REPORTFILES=dir(DOWNLOADDIR, pattern='^report*.csv')  
+  REPORTFILES=dir(DOWNLOADDIR, pattern='^report')  
+  if(length(REPORTFILES)>0) # filtering suffix extention
+    REPORTFILES=REPORTFILES[ grep('.csv$', REPORTFILES) ]
   
-  if (REPORTFILES == "report.csv") # first one 
-    NEXT.REPORT.ID <- 1  else 
-    {
-      if( length(REPORTFILES) > 0 ) # normal case incremental report number 
-      {
-        REPORTFILES=REPORTFILES[grep('.csv', REPORTFILES)]
-        
-        # finding next report number
-        X<-gsub('report', '', REPORTFILES ) 
-        X<-gsub('.csv', '', X ) 
-        X<-gsub('\\(', '', X ) 
-        X<-gsub('\\)', '', X ) 
-        NEXT.REPORT.ID<-max( as.numeric(X), na.rm=T ) + 1    
-      } else 
-      {
-        # first time to download
-        NEXT.REPORT.ID <- 0 
-      }
-    } # first report id 
+  # handing report id number 
+  if(length(REPORTFILES) == 1) # only 1st download file 
+  {
+      if (REPORTFILES == "report.csv") # first one 
+        NEXT.REPORT.ID <- 1 
+  }
   
+  # never download case 
+  if( length(REPORTFILES) == 0 )
+    NEXT.REPORT.ID <- 0 
+      
+  # has been downloaded more than once 
+  if( length(REPORTFILES) > 1 ) # normal case incremental report number 
+  {    
+    # finding next report number
+    X<-gsub('report', '', REPORTFILES ) 
+    X<-gsub('.csv', '', X ) 
+    X<-gsub('\\(', '', X ) 
+    X<-gsub('\\)', '', X ) 
+    NEXT.REPORT.ID<-max( as.numeric(X), na.rm=T ) + 1    
+  } 
+  
+    
 # handling path   
       if( NEXT.REPORT.ID == 0)
         REPORT.PATH<-paste(DOWNLOADDIR, "report.csv", sep='/') else
