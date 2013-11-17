@@ -7,32 +7,40 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
 
   #DOWNLOAD FILE NAMES 
   DOWNLOADDIR=.googletrend$DOWNLOADDIR    
+
   REPORTFILES=dir(DOWNLOADDIR, pattern='^report*.csv')  
   
-  if( length(REPORTFILES) > 0 )
-  {
-    REPORTFILES=REPORTFILES[grep('.csv', REPORTFILES)]
-    
-    # finding next report number
-    X<-gsub('report', '', REPORTFILES ) 
-    X<-gsub('.csv', '', X ) 
-    X<-gsub('\\(', '', X ) 
-    X<-gsub('\\)', '', X ) 
-    NEXT.REPORT.ID<-max( as.numeric(X), na.rm=T ) + 1    
-  } else 
-  {
-    # first time to download
-    NEXT.REPORT.ID <- 0 
-  }
-    
-  if( NEXT.REPORT.ID == 0)
-    REPORT.PATH<-paste(DOWNLOADDIR, "report.csv", sep='/') else
+  if (REPORTFILES == "report.csv") # first one 
+    NEXT.REPORT.ID <- 1  else 
     {
-      REPORT.PATH<-paste(DOWNLOADDIR, 'report', sep='/' )
-      REPORT.PATH<-sprintf('%s (%d).csv', REPORT.PATH, NEXT.REPORT.ID)
-      message(paste('download csv file path:', REPORT.PATH))
-      REPORT.PATH <<- REPORT.PATH 
-    }
+      if( length(REPORTFILES) > 0 ) # normal case incremental report number 
+      {
+        REPORTFILES=REPORTFILES[grep('.csv', REPORTFILES)]
+        
+        # finding next report number
+        X<-gsub('report', '', REPORTFILES ) 
+        X<-gsub('.csv', '', X ) 
+        X<-gsub('\\(', '', X ) 
+        X<-gsub('\\)', '', X ) 
+        NEXT.REPORT.ID<-max( as.numeric(X), na.rm=T ) + 1    
+      } else 
+      {
+        # first time to download
+        NEXT.REPORT.ID <- 0 
+      }
+    } # first report id 
+  
+# handling path   
+      if( NEXT.REPORT.ID == 0)
+        REPORT.PATH<-paste(DOWNLOADDIR, "report.csv", sep='/') else
+        {
+          REPORT.PATH<-paste(DOWNLOADDIR, 'report', sep='/' )
+          REPORT.PATH<-sprintf('%s(%d).csv', REPORT.PATH, NEXT.REPORT.ID)
+          message(paste('download csv file path:', REPORT.PATH))
+          REPORT.PATH <<- REPORT.PATH 
+        }
+      
+    
    
   # CONSTRUCT GOOGLE TREND QUERY  
   trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&content=1&export=1', keyword)
