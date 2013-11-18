@@ -59,7 +59,7 @@ datareader <- function(file)
     }
       
   MIN.IDX<-min(TOP.REGION.IDX,TOP.SUBREGION.IDX,TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)  
-  browser()
+  
   trend <- .parse.trend.data(x,0,MIN.IDX)  
   plot(trend, type='l')  
   
