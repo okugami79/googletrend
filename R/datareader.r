@@ -21,6 +21,7 @@ datareader <- function(file)
     return( grep(key,x[,1]) )  
   }
   
+  
   # 
   TOP.REGION.IDX=find.keyword.idx(TOP.REGION) # Range(TOP.REGION.IDX-TOP.CITY.IDX, Countries)
   TOP.SUBREGION.IDX=find.keyword.idx(TOP.SUBREGION) # Range(TOP.REGION.IDX-TOP.CITY.IDX, Countries)
@@ -58,7 +59,8 @@ datareader <- function(file)
     }
       
   MIN.IDX<-min(TOP.REGION.IDX,TOP.SUBREGION.IDX,TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)  
-  trend <- .parse.trend.data(x,0,MIN.IDX)
+  browser()
+  trend <- .parse.trend.data(x,0,MIN.IDX)  
   plot(trend, type='l')  
   
   ret<-list() 
@@ -106,14 +108,19 @@ datareader <- function(file)
   
 }
 
-.parse.trend.data<-function(x, start.idx=0, end.idx)
+.parse.trend.data <- function(x, start.idx=0, end.idx)
 {
   # hard code parsing  
-   y <- x[start.idx+1:(end.idx-4),]
+  y <- x[start.idx+1:(end.idx-4),]
   # convert to ordinary data frame 
   y[,1] <- as.character(y[,1])
   date <- do.call(rbind, (strsplit( y[,1], ' - ' ) ) ) 
-  y[,1] <- as.Date( date[,1] )
+  
+  # need code to handle monthly & weekly data data 
+  if ( length( strsplit(date[,1],'-')[[1]]) == 2 ) # monthly data 
+    y[,1] <- as.Date( sprintf('%s-01',date[,1]) ) else 
+      y[,1] <- as.Date( date[,1] )
+    
   y[,2] <- as.numeric( y[,2] )
    
   return(y)

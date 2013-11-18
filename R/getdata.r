@@ -73,6 +73,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
     # Parse resonse and store in CSV
     # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date
     x<-datareader(file=REPORT.PATH)   
+     
     if( !is.null(x) & simple ) 
       return(x$trend) else 
         return(x)    
