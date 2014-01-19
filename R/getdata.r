@@ -5,9 +5,35 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
 {
   require(utils)
  
-  #DOWNLOAD FILE NAMES 
-  DOWNLOADDIR=.googletrend$DOWNLOADDIR    
-
+  # set download directory path 
+  # mod: 20-01-2014 fix for download directory path error 
+  setup.download.dir <- function()
+  {
+  
+    if( ! file.exists(.googletrend$DOWNLOADDIR) ) 
+    {
+      text<-sprintf(' |- error : your default browser download path [%s] was not found.', 
+                    .googletrend$DOWNLOADDIR) 
+      message(text)
+      
+      message (' |- type googletrend::setdownloaddir("your browser download path") and try again! :) ')
+      
+      return(NULL)
+    }
+    
+    # cleaning up old downloaded good trend data files  
+    for ( item in dir(.googletrend$DOWNLOADDIR, pattern='^report', full.names=TRUE) )
+    {
+      file.remove(item) # delete old trend data file 
+    }
+        
+    return(.googletrend$DOWNLOADDIR)
+  }
+  
+  # setup download directory 
+  DOWNLOADDIR<-setup.download.dir() 
+  if( is.null(DOWNLOADDIR)) return(NULL)
+  
   REPORTFILES=dir(DOWNLOADDIR, pattern='^report')  
   if(length(REPORTFILES)>0) # filtering suffix extention
     REPORTFILES=REPORTFILES[ grep('.csv$', REPORTFILES) ]
@@ -65,7 +91,14 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
     Sys.sleep(1)
     retry<-retry+1 
     if(retry > 8) 
-      stop(" |- DID YOU LOGIN your gmail/gtrend account ??? : see http://www.google.com/trends/")
+    {
+      message(' |- Something went wrong!')
+      message(' |- Did you login to your gmail account at http://www.google.com/trends?')
+      message(' |- or Maybe, your browser default download directory path is different!') 
+      message(' |- type googletrend::setdownloaddir("YOUR BROWSER DOWNLOAD DIRECTORY PATH")')
+      stop(" |- timeout ")
+    }
+        
   } 
     
   # All succeed case 
