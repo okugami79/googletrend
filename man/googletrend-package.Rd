@@ -28,8 +28,13 @@ Maintainer: <chris.okugami@csiro.au>
 
 \keyword{ googletrend }
 
- 
 \examples{
-?googletrend::login 
-?googletrend::gettrend 
+library(googletrend)
+
+#specify the location of your default browser download directory path 
+setdownloadir('C:/User/XXX/Downloads') # replace with your own path! 
+
+TWITTER<-gettrend('twitter') 
+ 
 }
+
