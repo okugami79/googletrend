@@ -13,6 +13,10 @@ Something I like to share with R data analytic community.
   
 Example 
 ----
+library(googletrend)
+
+\#specify where your default browser download file 
+setdownloadir('C:/User/Downloads')
 
 \# run index of Google trend keyword boston
 
