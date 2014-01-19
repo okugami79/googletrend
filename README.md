@@ -17,7 +17,7 @@ library(googletrend)
 
 \#specify where your default browser download file 
 
-setdownloadir('C:/User/XXX/Downloads') \# replace XXX with your user name 
+setdownloaddir('C:/User/XXX/Downloads') \# replace XXX with your user name 
 
 \# run index of Google trend keyword boston
 
