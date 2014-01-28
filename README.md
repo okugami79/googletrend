@@ -13,6 +13,31 @@ Something I like to share with R data analytic community.
   
 Example 
 ----
+
+This new package supports multiple keyword query of Google trend data into your R session! 
+
+Installation: 
+
+require(devtools) 
+install_github('googletrend','okugami79')
+
+library(googletrend) 
+
+\# You need to Login http://google.com/trends on your browser!! 
+\# check your web browser's default download directory. 
+
+googletrend::setdownloaddir('C:/Users/XXX/Downloads')
+
+\# get google trend data, with keyword, "Twitter". 
+
+x<- googletrend::gettrend(keyword='Twitter') 
+
+\# get full detail trend, including top region etc .. 
+DETAIL<- googletrend::gettrend(keyword='Twitter') 
+DETAIL$top.search 
+DETAIL$top.region
+str( DETAIL$trend )
+
 library(googletrend)
 
 \#specify where your default browser download file 
