@@ -30,6 +30,30 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
     return(.googletrend$DOWNLOADDIR)
   }
   
+  # handling multiple keywords with comman,
+  # use recursive call 
+    KEYS <- unlist( strsplit(keyword, ','))
+    if( length(KEYS) > 1 ) 
+    {
+
+      L <- list()
+      for(item in KEYS)
+      {
+        
+       command<-sprintf('L$%s <- gettrend(keyword=item,geo=geo, year=year, plot=plot, simple=simple )', item)
+                
+        eval(parse(text=command))
+        
+      }
+      
+      message(' Note: returning R list object contains multiple keywords!')
+      message(' TIP')
+      message(' LIST.RESULT <-gettrend("boston,chris")')
+      message(' JOINED <- googletrend::mergetrend(LIST.RESULT) # to joint them together')
+      
+      return(L)
+    }
+  
   # setup download directory 
   DOWNLOADDIR<-setup.download.dir() 
   if( is.null(DOWNLOADDIR)) return(NULL)
@@ -71,8 +95,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
           REPORT.PATH <<- REPORT.PATH 
         }
       
-    
-   
+       
   # CONSTRUCT GOOGLE TREND QUERY  
   trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&content=1&export=1', keyword)
   

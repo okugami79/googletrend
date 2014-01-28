@@ -1,5 +1,7 @@
 \name{gettrend}
 \alias{gettrend}
+\alias{mergetrend}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
  Get Google trend data from Web 
@@ -97,6 +99,25 @@ au.region.firework.index.detail$top.city
 539          firework sydney    20
 
 # hmm, Currently, katy perry, song "firework"" is most hot topic in Australia 
+
+# running multiple keywords trends, speparated by commas.
+# return object will be in R list object for individual keywords
+M.TREND<- gettrend('boston,marathon,bom')
+
+str(M.TREND)
+
+# JOIN the multiple keyword object into column oriented format
+# for ease of use of modelling 
+
+M.TREND<-mergetrend(M.TREND)
+str(M.TREND) # column oriented dataset 
+
+# fitting boston index with other index 
+model<-lm(indexboston ~ indexmarathon + indexbom,data=M.TREND) 
+summary(model) 
+
+# correlation (remove first column contains week)
+cor(M.TREND[,-1] )
 
 }
 
