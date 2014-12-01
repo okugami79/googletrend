@@ -30,17 +30,20 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
     return(.googletrend$DOWNLOADDIR)
   }
   
-  # handling multiple keywords with comman,
-  # use recursive call 
+    # 
+    # handling multiple keywords with comman,
+    keyword=gsub(' ', "%20", keyword)
+    
     KEYS <- unlist( strsplit(keyword, ','))
+  
     if( length(KEYS) > 1 ) 
     {
 
       L <- list()
       for(item in KEYS)
       {
-        
-       command<-sprintf('L$%s <- gettrend(keyword=item,geo=geo, year=year, plot=plot, simple=simple )', item)
+       item=gsub('%20',' ', item)
+       command<-sprintf('L$`%s` <- gettrend(keyword=item,geo=geo, year=year, plot=plot, simple=simple )', item)
                 
         eval(parse(text=command))
         
@@ -105,7 +108,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
   
   if( !is.null(year))
     trendsURL <- paste(trendsURL, '&date=1%2F', year,'%2012m', sep='')
-          
+  
   utils::browseURL(trendsURL)
   
   retry=0

@@ -11,7 +11,26 @@ Acquire google trend data
 }
 
 \usage{
-gettrend(keyword = "boston", geo = NULL, year = NULL, plot = TRUE, simple=TRUE)
+ # world wide query index (keyword boston)
+ BOSTON.TREND=gettrend(keyword = "boston", geo = NULL, year = NULL, plot = TRUE, simple=TRUE)
+
+ NY.TREND=gettrend(keyword = "new york", geo = NULL, year = NULL, plot = TRUE, simple=TRUE)
+
+ # handling multiple keywords 
+ MULTIPLE.TREND=gettrend(keyword='new york,boston')
+ 
+ plot(MULTIPLE.TREND$`new york`,type='l') # USE `` because it contains space 
+ plot(MULTIPLE.TREND$`boston`,type='l')
+ 
+ # joint 2 trend together for multivariate analysis 
+ JOINED <- googletrend::mergetrend(MULTIPLE.TREND)
+
+ # REGION SPECIFIC trend query by country & state "<country-code>-<state>". example (US-NY) : US, state of New York
+ NY.TREND=gettrend(keyword = "new york", geo = "US-NY")
+
+ # REGION SPECIFIC trend query by country "<country-code>". example (AU) : First 2 characters 
+ NY.TREND=gettrend(keyword = "new york", geo = "AU")
+
 }
 
 \arguments{
