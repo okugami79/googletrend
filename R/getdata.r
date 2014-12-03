@@ -51,7 +51,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
       
       message(' Note: returning R list object contains multiple keywords!')
       message(' TIP')
-      message(' LIST.RESULT <-gettrend("boston,chris")')
+      message(' LIST.RESULT <-gettrend("boston,new york")')
       message(' JOINED <- googletrend::mergetrend(LIST.RESULT) # to joint them together')
       
       return(L)
