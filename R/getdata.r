@@ -116,7 +116,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
   {
     Sys.sleep(1)
     retry<-retry+1 
-    if(retry > 8) 
+    if(retry > 25) 
     {
       message(' |- Something went wrong!')
       message(' |- Did you login to your gmail account at http://www.google.com/trends?')

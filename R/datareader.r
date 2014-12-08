@@ -6,8 +6,9 @@ datareader <- function(file)
   # year : numeric integer, indicating single year 
 {
 
-  x<- read.csv(file=file, skip=5,col.names=c("week", "index"), stringsAsFactors=FALSE)
-
+#  x<- read.csv(file=file, skip=5,col.names=c("week", "index"), stringsAsFactors=FALSE)
+   x<- read.csv(file=file, skip=4,col.names=c("week", "index"), stringsAsFactors=FALSE)
+  
   TOP.REGION = "^Top regions for" 
   TOP.SUBREGION = "^Top subregions for"   
   TOP.CITY   = "^Top cities for"
@@ -111,7 +112,9 @@ datareader <- function(file)
 .parse.trend.data <- function(x, start.idx=0, end.idx)
 {
   # hard code parsing  
-  y <- x[start.idx+1:(end.idx-4),]
+  # y <- x[start.idx+1:(end.idx-4),]
+  y <- x[start.idx+1:(end.idx-1),]
+  
   # convert to ordinary data frame 
   y[,1] <- as.character(y[,1])
   date <- do.call(rbind, (strsplit( y[,1], ' - ' ) ) ) 
