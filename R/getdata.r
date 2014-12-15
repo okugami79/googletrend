@@ -1,7 +1,7 @@
 # NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
 # mod: chriso nov-13: first usage of google trend report file issue 
 # 
-gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE) 
+gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE, use.monthly=FALSE) 
 {
   require(utils)
  
@@ -132,11 +132,20 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE)
     # Parse resonse and store in CSV
     # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date
     x<-datareader(file=REPORT.PATH)   
-     
+
+    #mod: chriso monthly aggregate 
+    if(use.monthly)
+    {   
+      x$trend$week=as.Date( sprintf("%s-%s-01", as.numeric( format(x$trend$week,'%Y') ), as.numeric( format(x$trend$week,'%m') ) ) )
+      x$trend=aggregate(index ~ week, data=x$trend, FUN=sum)
+      message('use.monthly [ON] - ..we are using monthly Index')
+    }
+    
     if( !is.null(x) & simple ) 
       return(x$trend) else 
         return(x)    
   }
   
 } # f( gettrend ) 
+
 

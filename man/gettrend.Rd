@@ -55,6 +55,11 @@ Acquire google trend data
   plot( ret$trend ) 
   
  }
+ 
+ \item{use.monthly}
+ {
+  TRUE, aggregate index for montly. In rare case, some index use monthly only so we add this function to cope with the issue. FALSE, use default weekly index.  
+ }
 
 }
 
@@ -137,6 +142,9 @@ summary(model)
 
 # correlation (remove first column contains week)
 cor(M.TREND[,-1] )
+
+# GET MONTHLY INDEX 
+MONTHLY.INDEX = gettrend('boston',use.monthly=TRUE)
 
 }
 
