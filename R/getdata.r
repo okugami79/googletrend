@@ -32,7 +32,8 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
   
     # 
     # handling multiple keywords with comman,
-    keyword=gsub(' ', "%20", keyword)
+    keyword=gsub(' ', "%20", keyword) # handling space 
+    keyword=gsub('"', "%22", keyword) # handling double quote  
     
     KEYS <- unlist( strsplit(keyword, ','))
   
@@ -110,7 +111,8 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
     trendsURL <- paste(trendsURL, '&date=1%2F', year,'%2012m', sep='')
   
   utils::browseURL(trendsURL)
-  
+  #message(trendsURL)
+
   retry=0
   while ( !file.exists(REPORT.PATH) ) 
   {

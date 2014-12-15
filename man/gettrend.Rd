@@ -70,6 +70,20 @@ trend data frame - dataframe(Date,Index) if simple=TRUE
 list             - all trend attributes like spatial info if simple=FALSE 
 }
 
+\details{
+ Using special search operator (+,-) in query 
+ 
+ Example 
+ getgrend('tennis shoes') #result contains includes searches containing both tennis and shoes in any order. 
+ 
+ getgrend('"tennis shoes"') #result contains includes exact search term 
+ 
+ getgrend('"tennis+shoes"') #result contains searches the word tennis OR shoes 
+ 
+ getgrend('"tennis-shoes"') #result contains searches containing tennis but excludes searches with the word shoes
+ 
+}
+
 
 \author{
 chris okugami 
