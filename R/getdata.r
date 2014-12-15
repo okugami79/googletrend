@@ -51,7 +51,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
       
       message(' Note: returning R list object contains multiple keywords!')
       message(' TIP')
-      message(' LIST.RESULT <-gettrend("boston,chris")')
+      message(' LIST.RESULT <-gettrend("boston,new york")')
       message(' JOINED <- googletrend::mergetrend(LIST.RESULT) # to joint them together')
       
       return(L)
@@ -116,7 +116,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
   {
     Sys.sleep(1)
     retry<-retry+1 
-    if(retry > 8) 
+    if(retry > 25) 
     {
       message(' |- Something went wrong!')
       message(' |- Did you login to your gmail account at http://www.google.com/trends?')
