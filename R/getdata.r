@@ -1,7 +1,7 @@
 # NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
 # mod: chriso nov-13: first usage of google trend report file issue 
 # 
-gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE, use.monthly=FALSE) 
+gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TRUE,simple=TRUE, use.monthly=FALSE) 
 {
   require(utils)
  
@@ -34,7 +34,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
     # handling multiple keywords with comman,
     keyword=gsub(' ', "%20", keyword) # handling space 
     keyword=gsub('"', "%22", keyword) # handling double quote  
-    
+      
     KEYS <- unlist( strsplit(keyword, ','))
   
     if( length(KEYS) > 1 ) 
@@ -101,7 +101,9 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
       
        
   # CONSTRUCT GOOGLE TREND QUERY  
-  trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&content=1&export=1', keyword)
+  if(!is.null(category) ) 
+    trendsURL <- sprintf('http://www.google.com/trends/trendsReport?cat=%s&q=%s&content=1&export=1', category, keyword)
+    else trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&content=1&export=1', keyword)
   
   # handling customizing query  
   if( !is.null(geo))
@@ -111,7 +113,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, plot=TRUE,simple=TRUE,
     trendsURL <- paste(trendsURL, '&date=1%2F', year,'%2012m', sep='')
   
   utils::browseURL(trendsURL)
-  #message(trendsURL)
+  message(trendsURL)
 
   retry=0
   while ( !file.exists(REPORT.PATH) ) 

@@ -71,7 +71,7 @@ list             - all trend attributes like spatial info if simple=FALSE
 }
 
 \details{
- Using special search operator (+,-) in query 
+ USING GOOGLE SPECIAL SEARCH OPERATOR (+,-) in query 
  
  Example 
  getgrend('tennis shoes') #result contains includes searches containing both tennis and shoes in any order. 
@@ -82,6 +82,12 @@ list             - all trend attributes like spatial info if simple=FALSE
  
  getgrend('"tennis-shoes"') #result contains searches containing tennis but excludes searches with the word shoes
  
+ USING CATEGORY in query 
+ head( list.category() ) # FIND YOUR QUERY category code. 
+ 
+ # for example "Celebrities & Entertainment News Celebrities" - category code 0-3-184 
+ PARIS = gettrend('"Paris Hilton"', category='0-3-184')
+
 }
 
 
