@@ -33,7 +33,9 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TR
     # 
     # handling multiple keywords with comman,
     keyword=gsub(' ', "%20", keyword) # handling space 
-    keyword=gsub('"', "%22", keyword) # handling double quote  
+    keyword=gsub('"', "%22", keyword) # handling double quote 
+    keyword=gsub('+', "%2B", keyword) # operator plus 
+  
       
     KEYS <- unlist( strsplit(keyword, ','))
   
