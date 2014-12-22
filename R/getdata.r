@@ -1,10 +1,18 @@
 # NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
 # mod: chriso nov-13: first usage of google trend report file issue 
 # 
-gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TRUE,simple=TRUE, use.monthly=FALSE) 
+gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TRUE,simple=TRUE, use.monthly=FALSE, compare=FALSE) 
 {
   require(utils)
- 
+  # mod; added compare functionalities 
+  if(compare) return( .gettrend.compare(keyword=keyword,
+                                        geo=geo,
+                                        year=year,
+                                        category=category,
+                                        plot=plot,
+                                        simple=simple,
+                                        compare=TRUE) ) 
+  
   # set download directory path 
   # mod: 20-01-2014 fix for download directory path error 
   setup.download.dir <- function()

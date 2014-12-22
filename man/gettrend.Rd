@@ -166,7 +166,10 @@ cor(M.TREND[,-1] )
 # GET MONTHLY INDEX 
 MONTHLY.INDEX = gettrend('boston',use.monthly=TRUE)
 
-}
+# COMPARE RESULT 
+TREND <- .gettrend(keyword = 'Basketball,Football,Tennis', geo= 'AU',compare=TRUE) # by keyword
+TREND <- .gettrend(keyword = 'Tennis', geo= 'AU,NZ',compare=TRUE) # by different location 
 
 }
 
+}
