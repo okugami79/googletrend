@@ -101,15 +101,15 @@
              trendsURL <- paste(trendsURL, '&date=1%2F', year,'%2012m', sep='')
            
          },
-         "GEO"={           
+         "GEO"={  
            geo=gsub(',','%2C%20',geo)
            if(!is.null(category) ) 
-             trendsURL <- sprintf('http://www.google.com/trends/trendsReport?cat=%s&q=%s&cmpt=geo&geo=%scontent=1&export=1', category, keyword, geo)
-           else trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&cmpt=geo&content=1&export=1&geo=%s', keyword, geo)           
+             trendsURL <- sprintf('http://www.google.com/trends/trendsReport?cat=%s&q=%s&cmpt=geo&geo=%s&content=1&export=1', category, keyword, geo)
+           else trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&cmpt=geo&content=1&geo=%s&export=1', keyword, geo)           
 
            if( !is.null(year))
              trendsURL <- paste(trendsURL, '&date=1%2F', year,'%2012m', sep='')
-           
+                      
          },
          "YEAR"={
            stop('NOT SUPPORTED YET ')
