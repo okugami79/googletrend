@@ -1,13 +1,12 @@
 \name{gettrend}
 \alias{gettrend}
-\alias{mergetrend}
 
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
  Get Google trend data from Web 
 }
+
 \description{
-Acquire google trend data 
+Acquire google trend data within R session. Transform google trend data to R format for quick data analysis. The aim of this package is to minimize the effort of manual download CSV file from Google trend data. 
 }
 
 \usage{
@@ -30,6 +29,10 @@ Acquire google trend data
 
  # REGION SPECIFIC trend query by country "<country-code>". example (AU) : First 2 characters 
  NY.TREND=gettrend(keyword = "new york", geo = "AU")
+
+ # Using google category (Automobile)
+ TREND2 <- gettrend('Jaguar,bentley', category='0-47')
+ RR=mergetrend(TREND2)
 
 }
 
@@ -56,13 +59,17 @@ Acquire google trend data
   
  }
  
- \item{use.monthly}
+  \item{use.monthly} 
  {
   TRUE, aggregate index for montly. In rare case, some index use monthly only so we add this function to cope with the issue. FALSE, use default weekly index.  
  }
 
-}
+ \item{compare}
+ {
+  TRUE, google compare functionatires. Support multiple keywords, multile geo parameter 
+ }
 
+}
 
 \value{
 NULL             - no result match with keyword 

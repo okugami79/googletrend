@@ -14,7 +14,7 @@ RgoogleTrends package was discontinued due to the change of new google API. R us
 Package: \tab googletrend\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
-Date: \tab 2013-10-10\cr
+Date: \tab 2014-10-10\cr
 License: \tab GPL \cr
 }
 
@@ -35,6 +35,8 @@ library(googletrend)
 setdownloadir('C:/User/XXX/Downloads') # replace with your own path! 
 
 TWITTER<-gettrend('twitter') 
+
+# see more detail of complex google trend query at ?gettrend 
  
 }
 

@@ -6,11 +6,13 @@
   require(utils)
   
   COMPARE.ITEM=NULL 
-  
+
   if( length( unlist( strsplit(keyword,',') )  )  > 1 ) COMPARE.ITEM='KEYWORD' else 
-    if(is.vector(geo)) COMPARE.ITEM='GEO' else 
-      if(is.vector(year)) COMAPRE.ITEM='YEAR'
+    if(length( unlist( strsplit(geo,',') )  )  > 1) COMPARE.ITEM='GEO' else 
+      if(length( unlist( strsplit(year,',') )  )  > 1) COMPARE.ITEM='YEAR' else 
+        stop("Invalid Compare argument!")
   
+  message( sprintf(' |- ** Compare Item: %s ** --|', COMPARE.ITEM))
   
   # set download directory path 
   # mod: 20-01-2014 fix for download directory path error 
@@ -112,8 +114,13 @@
                       
          },
          "YEAR"={
-           stop('NOT SUPPORTED YET ')
-           
+           years <- unlist( strsplit(year, ','))
+           years <- sapply(years, FUN = function(x) return(sprintf('1%%2F%s%%2012m',x)))
+           years <- paste(years,collapse  ='%2C%20')
+          
+          if(!is.null(category) ) 
+            trendsURL <- sprintf('http://www.google.com/trends/trendsReport?cat=%s&q=%s&cmpt=date&date=%s&geo=%s&content=1&export=1', category, keyword, years, geo) else trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&cmpt=date&date=%s&content=1&geo=%s&export=1', keyword, years, geo)           
+          
          }
          )
   
@@ -148,7 +155,8 @@
   #debugonce(datareader1)
   switch(COMPARE.ITEM,
          'KEYWORD'={x<-datareader1(file=REPORT.PATH)},
-         'GEO'={x<-datareader1(file=REPORT.PATH,skip=5)}
+         'GEO'={x<-datareader1(file=REPORT.PATH,skip=5)},
+         'YEAR'={x<-datareader1(file=REPORT.PATH,skip=5)}
   )
          
   
