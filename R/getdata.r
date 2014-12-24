@@ -1,8 +1,11 @@
 # NOTE: http://www.google.com/trends/explore#q=asthma&geo=AU&date=1%2F2004%202m&cmpt=q 
 # mod: chriso nov-13: first usage of google trend report file issue 
 # 
-gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TRUE,simple=TRUE, use.monthly=FALSE, compare=FALSE) 
+gettrend<-function(keyword="boston", geo=NULL, year=NULL, 
+                   category=NULL, plot=TRUE,simple=TRUE, 
+                   use.monthly=FALSE, compare=FALSE) 
 {
+  
   require(utils)
   # mod; added compare functionalities 
   if(compare) return( .gettrend.compare(keyword=keyword,
@@ -54,7 +57,7 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TR
       for(item in KEYS)
       {
        item=gsub('%20',' ', item)
-       command<-sprintf('L$`%s` <- gettrend(keyword=item,geo=geo, year=year, plot=plot, simple=simple )', item)
+       command<-sprintf('L$`%s` <- gettrend(keyword=item,geo=geo, year=year, category=category,plot=plot, use.monthly=use.monthly, simple=simple )', item)
                 
         eval(parse(text=command))
         
@@ -108,11 +111,13 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL, category=NULL, plot=TR
           message(paste('download csv file path:', REPORT.PATH))
           REPORT.PATH <<- REPORT.PATH 
         }
-      
-       
-  # CONSTRUCT GOOGLE TREND QUERY  
+         
+  # CONSTRUCT GOOGLE TREND QUERY   
   if(!is.null(category) ) 
-    trendsURL <- sprintf('http://www.google.com/trends/trendsReport?cat=%s&q=%s&content=1&export=1', category, keyword)
+  {
+    message( sprintf("|- ** GOOGLE CATEGORY: %s ** -|", category )) 
+    trendsURL <- sprintf('http://www.google.com/trends/trendsReport?cat=%s&q=%s&content=1&export=1', category, keyword)    
+  }
     else trendsURL <- sprintf('http://www.google.com/trends/trendsReport?q=%s&content=1&export=1', keyword)
   
   # handling customizing query  

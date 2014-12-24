@@ -95,6 +95,11 @@ list             - all trend attributes like spatial info if simple=FALSE
  # for example "Celebrities & Entertainment News Celebrities" - category code 0-3-184 
  PARIS = gettrend('"Paris Hilton"', category='0-3-184')
 
+ # category reduce the size of data, often doesn't get enough weekly count. Use use.monthly=TRUE
+ TREND.B2 <- gettrend(keyword = 'Jaguar,Bentley', category = '0-47', use.monthly = TRUE)
+ OO=mergetrend(TREND.B2)
+
+
 }
 
 
