@@ -1,10 +1,11 @@
 Package: googletrend
 Type: Package
-Title: R google trend  (gather google trend data to R)
-Version: 1.0
-Date: 2013-10-10
+Title: R google trend  ( automated download google trend data to R)
+Version: 1.1
+Date: 2015-01-09
 Author: chris okugami 
 Maintainer:  <chris.okugami@csiro.au>
 Description: 2013-Sept. Google trend data downloading API for R 
 License: GPL
 Depends: R (>= 2.5.0), 
+Documentation: Daniel Wochner 

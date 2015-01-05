@@ -2,186 +2,182 @@
 \alias{gettrend}
 
 \title{
- Get Google trend data from Web 
+Load Google Trends Data from Web
 }
 
 \description{
-Acquire google trend data within R session. Transform google trend data to R format for quick data analysis. The aim of this package is to minimize the effort of manual download CSV file from Google trend data. 
+The \code{googletrend} package was developed to load and transform Google Trends data within R. The aim of the package is to minimize the effort of manually downloading and merging different CSV files from Google Trends.
 }
-
+   
 \usage{
- # world wide query index (keyword boston)
- BOSTON.TREND=gettrend(keyword = "boston", geo = NULL, year = NULL, plot = TRUE, simple=TRUE)
-
- NY.TREND=gettrend(keyword = "new york", geo = NULL, year = NULL, plot = TRUE, simple=TRUE)
-
- # handling multiple keywords 
- MULTIPLE.TREND=gettrend(keyword='new york,boston')
- 
- plot(MULTIPLE.TREND$`new york`,type='l') # USE `` because it contains space 
- plot(MULTIPLE.TREND$`boston`,type='l')
- 
- # joint 2 trend together for multivariate analysis 
- JOINED <- googletrend::mergetrend(MULTIPLE.TREND)
-
- # REGION SPECIFIC trend query by country & state "<country-code>-<state>". example (US-NY) : US, state of New York
- NY.TREND=gettrend(keyword = "new york", geo = "US-NY")
-
- # REGION SPECIFIC trend query by country "<country-code>". example (AU) : First 2 characters 
- NY.TREND=gettrend(keyword = "new york", geo = "AU")
-
- # Using google category (Automobile)
- TREND2 <- gettrend('Jaguar,bentley', category='0-47')
- RR=mergetrend(TREND2)
-
+gettrend(keywords = 'Tennis', geo = NULL, year = NULL, plot=TRUE, simple = TRUE,
+         use.monthly = FALSE, compare = FALSE)
 }
 
 \arguments{
   \item{keyword}{
-   google trend keyword 
+   this argument allows to specify the Google Trend search term(s) (example: \code{keyword = 'Tennis'} or \code{keyword = 'Basketball, Tennis'})
 }
+
   \item{geo}{
-  character for specifiy country|state, example, 'AU-NSW'. See wordpress for more info. 
+  this argument allows to specify country or state (example: use \code{geo = 'AU'} for Australia or \code{geo = 'AU-NSW'} for the state North South Wales in Australia). Default is NULL, i.e. worldwide.
 }
   \item{year}{
-  specific year only data - defaul NULL, grab entire dataset 
+  this argument allows to specify a particular year (example: \code{year = '2013'}). Default is NULL, i.e. entire time range ever since January 2004.
 }
   \item{plot}{
-  plot is FALSE, doesn't display trend figure. Default is TRUE, show result. 
+  this binary argument allows to specify whether a trend figure shall be displayed or not. Default is TRUE, i.e. shows trend figures. 
 }
 
   \item{simple}{
-  Default is simple=TRUE, only return trend index, simple=FALSE, return full attribute data like, top cities, countries, associated keyword top list, raising new keywords topic. List object will be return. 
-  
-  To extract trend data, 
-  ret<-gettrend('boston',simple=FALSE)
-  plot( ret$trend ) 
-  
- }
+  this binary argument allows to specify whether full attribute data (such as top cities, countries, top related keyword list) shall be returned or not. Default is TRUE, i.e. the function only returns the Google Trend index without any further attributes. If FALSE, the function returns full attribute data (incl. top cities, countries, related top keywords list, raising new keywords, etc.).
+}
  
   \item{use.monthly} 
  {
-  TRUE, aggregate index for montly. In rare case, some index use monthly only so we add this function to cope with the issue. FALSE, use default weekly index.  
+  this binary argument allows to specify whether the Google Trend index shall be aggregated to monthly frequency data or not. Default is FALSE, i.e. use weekly data. 
  }
 
  \item{compare}
  {
-  TRUE, google compare functionatires. Support multiple keywords, multile geo parameter 
+  this binary argument allows specify whether different search terms, locations or time ranges shall be compared or not. Default is FALSE, i.e. multiple search terms, multiple geo locations or multiple time ranges are loaded individually one-by-one. If TRUE the values of those attributes are compared for which there are multiple terms (either multiple keywords, multiple geos or multiple years).
  }
 
 }
 
 \value{
-NULL             - no result match with keyword 
-trend data frame - dataframe(Date,Index) if simple=TRUE 
-list             - all trend attributes like spatial info if simple=FALSE 
+NULL             - no result matches with keyword; 
+trend data frame - dataframe(Date,Index) if simple=TRUE; 
+list             - all trend attributes like spatial info if simple=FALSE; 
 }
 
 \details{
- USING GOOGLE SPECIAL SEARCH OPERATOR (+,-) in query 
- 
- Example 
- getgrend('tennis shoes') #result contains includes searches containing both tennis and shoes in any order. 
- 
- getgrend('"tennis shoes"') #result contains includes exact search term 
- 
- getgrend('"tennis+shoes"') #result contains searches the word tennis OR shoes 
- 
- getgrend('"tennis-shoes"') #result contains searches containing tennis but excludes searches with the word shoes
- 
- USING CATEGORY in query 
- head( list.category() ) # FIND YOUR QUERY category code. 
- 
- # for example "Celebrities & Entertainment News Celebrities" - category code 0-3-184 
- PARIS = gettrend('"Paris Hilton"', category='0-3-184')
+USING GOOGLE SPECIAL SEARCH OPERATOR (+,-,"")
 
- # category reduce the size of data, often doesn't get enough weekly count. Use use.monthly=TRUE
- TREND.B2 <- gettrend(keyword = 'Jaguar,Bentley', category = '0-47', use.monthly = TRUE)
- OO=mergetrend(TREND.B2)
-
-
+gettrend(keyword = 'tennis shoes') #result includes searches containing both 'tennis' and 'shoes' in any order. 
+ 
+gettrend(keyword = '"tennis shoes"') #result includes exact search term 
+ 
+gettrend(keyword = 'tennis+shoes') #result contains searches the word 'tennis' OR 'shoes' 
+ 
+gettrend(keyword = 'tennis-shoes') #results will include searches with the word 'tennis' but excludes searches with the word 'shoes'
 }
 
 
 \author{
-chris okugami 
+Chris Okugami 
 }
 
 \examples{
 \dontrun 
-{
-boston.world.index <- gettrend('boston')
-> head(boston.world.index)
-        week index
-1 2004-01-11    12
-2 2004-01-18    12
-3 2004-01-25    12
-4 2004-02-01    13
-5 2004-02-08    13
-6 2004-02-15    12
+{        
+# (1) LOAD SINGLE KEYWORDS
+  (1.1) Load single keyword index
+  TREND.A <- gettrend(keyword = 'Basketball')
+  TREND.B <- gettrend(keyword = 'Football')
+  TREND.C <- gettrend(keyword = 'Tennis')
+ 
+ > head(TREND.C)
+          week index
+  1 2004-01-04    42
+  2 2004-01-11    43
+  3 2004-01-18    55
+  4 2004-01-25    57
+  5 2004-02-01    45
+  6 2004-02-08    42
+ 
+ 
+ 
+# (2) LOAD AND MERGE MULTIPLE KEYWORDS
+  TRENDS.ABC <- gettrend(keyword='Basketball, Football, Tennis')
+  MERGED.TRENDS.ABC <- googletrend::mergetrend(TRENDS.ABC) 
+ 
+ > head(MERGED.TRENDS.ABC)
+          week Basketball Football Tennis
+  1 2004-01-04         42       39     42
+  2 2004-01-11         46       37     43
+  3 2004-01-18         47       37     55
+  4 2004-01-25         43       35     57
+  5 2004-02-01         44       40     45
+  6 2004-02-08         46       33     42
 
 
 
-# geo give you narrow region of trend. For example, (AU-Australia)
-# we are interested in people in Australia interested in firework.
-# Look my wordpress page to find out how find those region symbol. 
+# (3) LOAD FULL ATTRIBUTE LISTS
+# (3.1) Load full attribute list
+  TREND.ATT <- gettrend(keyword = 'Tennis', simple=FALSE)  
 
-au.region.firework.index <- gettrend('firework', geo='AU')
+  # Show attributea via $top.region, $top.city or $top.search  
+  > head(TREND.ATT$top.region)
+           region index
+  576   Australia   100
+  577     Bermuda    93
+  578      Monaco    90
+  579  San Marino    87
+  580 Switzerland    82
+  581      France    80
+  
+  > head(TREND.ATT$top.city)
+                     region index
+  747          Paris (France)   100
+  748   Melbourne (Australia)    99
+  749 London (United Kingdom)    94
+  750    Zurich (Switzerland)    91
+  751      Sydney (Australia)    85
+  752      Brussels (Belgium)    78
+  
+  > head(TREND.ATT$top.search)
+        top.search index
+  764 tennis us open    75
+  765        us open    70
+  766     atp tennis    60
+  767            atp    60
+  768    live tennis    50
+  769   tennis shoes    40
+  
+  
+  
+# (4) ADDITIONAL SPECIFICATIONS  
+# (4.1) Search for keyword in a specific country or state (e.g. 'Australia' or 'New South Wales') 
+  TREND.GEO <- gettrend(keyword = 'Tennis', geo = 'AU')
+  TREND.GEO <- gettrend(keyword = 'Tennis', geo = 'AU-NSW')
+ 
+# (4.2) Search for keyword during a particular year (e.g. '2012')
+  TREND.GEO <- gettrend(keyword = 'Tennis', year = '2012')
+  
+# (4.3) Search for keyword within a particular category (e.g. 'Sports')
+  TREND.CAT <- gettrend(keyword = 'Tennis', category='0-20')
 
-# you can get full detail report 
-au.region.firework.index.detail <- gettrend('firework', geo='AU', simple=FALSE)
-
-au.region.firework.index.detail$top.region
-                          region index
-515              New South Wales   100
-516                   Queensland    93
-517              South Australia    88
-
-au.region.firework.index.detail$top.city
-       region index
-525    Sydney   100
-526  Brisbane    86
-527 Melbourne    83
-528  Adelaide    79
+# (4.4) Compare different search terms, locations, or time spans,
+  TREND.COMP.KEY <- gettrend(keyword = 'Basketball, Football, Tennis', compare = TRUE)
+  TREND.COMP.GEO <- gettrend(keyword = 'Tennis', geo = 'AU, IN, US', compare = TRUE)
+  TREND.COMP.TSP <- gettrend(keyword = 'Tennis', year= '2011, 2012, 2013', compare = TRUE)
+  
+# (4.5) Use monthly values (i.e. index is aggregated/summed over different weeks)
+  TREND.MTH <- gettrend (keyword = 'Tennis', use.monthly=TRUE)
 
 
-> au.region.firework.index.detail$top.search
-                  top.search index
-534            katy firework    95
-535               katy perry    95
-536      firework katy perry    95
-537                fireworks    40
-538        katy perry lyrics    35
-539          firework sydney    20
 
-# hmm, Currently, katy perry, song "firework"" is most hot topic in Australia 
+# (5) COMPUTATIONS AND DATA MANIPULATION
+# (5.1) Plot a single keyword (use $'...' for keywords with space)
+  TRENDS.ABC <- gettrend(keyword='Basketball, Football, Tennis')
+  MERGED.TRENDS.ABC <- googletrend::mergetrend(TRENDS.ABC) 
+  plot(MERGED.TRENDS.ABC$Basketball,type='l')
 
-# running multiple keywords trends, speparated by commas.
-# return object will be in R list object for individual keywords
-M.TREND<- gettrend('boston,marathon,bom')
+# (5.2) Correlation among multiple keywords
+  TRENDS.ABC <- gettrend(keyword='Basketball, Football, Tennis')
+  MERGED.TRENDS.ABC <- googletrend::mergetrend(TRENDS.ABC) 
+  cor(MERGED.TRENDS.ABC[,-1])
+  
+# (5.3) Fit linear regression to the data
+  TRENDS.ABC <- gettrend(keyword='Basketball, Football, Tennis')
+  MERGED.TRENDS.ABC <- googletrend::mergetrend(TRENDS.ABC) 
+  REGMODELL <- lm(Basketball ~ Football + Tennis, data=MERGED.TRENDS.ABC)
+  summary(REGMODELL)
 
-str(M.TREND)
-
-# JOIN the multiple keyword object into column oriented format
-# for ease of use of modelling 
-
-M.TREND<-mergetrend(M.TREND)
-str(M.TREND) # column oriented dataset 
-
-# fitting boston index with other index 
-model<-lm(indexboston ~ indexmarathon + indexbom,data=M.TREND) 
-summary(model) 
-
-# correlation (remove first column contains week)
-cor(M.TREND[,-1] )
-
-# GET MONTHLY INDEX 
-MONTHLY.INDEX = gettrend('boston',use.monthly=TRUE)
-
-# COMPARE RESULT 
-TREND <- .gettrend(keyword = 'Basketball,Football,Tennis', geo= 'AU',compare=TRUE) # by keyword
-TREND <- .gettrend(keyword = 'Tennis', geo= 'AU,NZ',compare=TRUE) # by different location 
 
 }
 
 }
+
+
