@@ -148,9 +148,12 @@ gettrend<-function(keyword="boston", geo=NULL, year=NULL,
     
   # All succeed case 
   {
+    
     # Parse resonse and store in CSV
     # We skip ther first 5 rows which contain the Google header; we then read 503 rows up to the current date
-    x<-datareader(file=REPORT.PATH)   
+    if(!is.null(category))
+     x<-datareader(file=REPORT.PATH, simple=TRUE) else 
+       x<-datareader(file=REPORT.PATH, simple=FALSE)
 
     #mod: chriso monthly aggregate 
     if(use.monthly)

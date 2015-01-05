@@ -1,6 +1,6 @@
 # parsing google trend file, extract information 
  
-datareader <- function(file)
+datareader <- function(file, simple=FALSE)
   # file : google trend download file 
   # geom : Location Code in character 
   # year : numeric integer, indicating single year 
@@ -14,7 +14,7 @@ datareader <- function(file)
   TOP.CITY   = "^Top cities for"
   TOP.SEARCH = "^Top searches for"
   RISING.SEARCH="^Rising searches for"
-  
+  INTEREST.OVER.TIME="^Interest over time"
 
   find.keyword.idx<-function(key)
   {
@@ -29,7 +29,8 @@ datareader <- function(file)
   TOP.CITY.IDX=find.keyword.idx(TOP.CITY)
   TOP.SEARCH.IDX=find.keyword.idx(TOP.SEARCH)
   RISING.SEARCH.IDX=find.keyword.idx(RISING.SEARCH)
-
+  INTEREST.OVER.TIME=find.keyword.idx(INTEREST.OVER.TIME)
+  
   message(
     paste("TOP.REGION.IDX",TOP.REGION.IDX, 
           "TOP.SUBREGION.IDX",TOP.SUBREGION.IDX,
@@ -43,7 +44,7 @@ datareader <- function(file)
   if ( 
     # checking only single entry form 
     is.null( 
-      unlist(sapply(c(TOP.REGION.IDX,TOP.SUBREGION.IDX,TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX),FUN=function(X)length(x)))    
+      unlist(sapply(c(TOP.REGION.IDX,TOP.SUBREGION.IDX,TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX,INTEREST.OVER.TIME),FUN=function(X)length(x)))    
     )    
     ) 
     { # single entry, no associatge 
@@ -59,7 +60,7 @@ datareader <- function(file)
       return(ret)      
     }
       
-  MIN.IDX<-min(TOP.REGION.IDX,TOP.SUBREGION.IDX,TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)  
+  MIN.IDX<-min(TOP.REGION.IDX,TOP.SUBREGION.IDX,TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX,INTEREST.OVER.TIME, na.rm=T)  
   
   trend <- .parse.trend.data(x,0,MIN.IDX)  
   plot(trend, type='l')  
@@ -67,43 +68,47 @@ datareader <- function(file)
   ret<-list() 
   ret$trend <- trend 
    
-  MIN.IDX<-min(TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)    
-  if( length(TOP.REGION.IDX) > 0 &  length(MIN.IDX) > 0 )
-  { 
-    ret$top.region <- .parse.top.region(x,
-                                    start.idx=TOP.REGION.IDX,
-                                    end.idx=MIN.IDX )    
-  }else if( length(TOP.SUBREGION.IDX) > 0 &  length(MIN.IDX) > 0 )
+  if(simple==FALSE)
   {
-    ret$top.region <- .parse.top.region(x,
-                                        start.idx=TOP.SUBREGION.IDX,
+    # parsing additional data 
+    MIN.IDX<-min(TOP.CITY.IDX,TOP.SEARCH.IDX,RISING.SEARCH.IDX,INTEREST.OVER.TIME, na.rm=T)    
+    if( length(TOP.REGION.IDX) > 0 &  length(MIN.IDX) > 0 )
+    { 
+      ret$top.region <- .parse.top.region(x,
+                                          start.idx=TOP.REGION.IDX,
+                                          end.idx=MIN.IDX )    
+    }else if( length(TOP.SUBREGION.IDX) > 0 &  length(MIN.IDX) > 0 )
+    {
+      ret$top.region <- .parse.top.region(x,
+                                          start.idx=TOP.SUBREGION.IDX,
+                                          end.idx=MIN.IDX )    
+    }else 
+      ret$top.region <- NULL 
+    
+    if(length(TOP.CITY.IDX) > 0 & length(RISING.SEARCH.IDX) > 0 )
+    {
+      MIN.IDX<-min(TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)        
+      ret$top.city <- .parse.top.region(x,
+                                        start.idx=TOP.CITY.IDX,
                                         end.idx=MIN.IDX )    
-  }else 
-    ret$top.region <- NULL 
-  
-  if(length(TOP.CITY.IDX) > 0 & length(RISING.SEARCH.IDX) > 0 )
-  {
-    MIN.IDX<-min(TOP.SEARCH.IDX,RISING.SEARCH.IDX, na.rm=T)        
-    ret$top.city <- .parse.top.region(x,
-                                  start.idx=TOP.CITY.IDX,
-                                  end.idx=MIN.IDX )    
-  }else 
-    ret$top.city <- NULL 
-      
-  if( length(TOP.SEARCH.IDX) > 0 &  length(RISING.SEARCH.IDX) > 0  )
-  {
-    ret$top.search <- .parse.top.search(x,
-                                    start.idx=TOP.SEARCH.IDX,
-                                    end.idx=RISING.SEARCH.IDX )    
-  } else 
-    if( length(TOP.SEARCH.IDX) > 0 )
+    }else 
+      ret$top.city <- NULL 
+    
+    if( length(TOP.SEARCH.IDX) > 0 &  length(RISING.SEARCH.IDX) > 0  )
     {
       ret$top.search <- .parse.top.search(x,
                                           start.idx=TOP.SEARCH.IDX,
-                                          end.idx=nrow(x) )          
-    } else ret$top.search <- NULL 
- 
-  
+                                          end.idx=RISING.SEARCH.IDX )    
+    } else 
+      if( length(TOP.SEARCH.IDX) > 0 )
+      {
+        ret$top.search <- .parse.top.search(x,
+                                            start.idx=TOP.SEARCH.IDX,
+                                            end.idx=nrow(x) )          
+      } else ret$top.search <- NULL 
+    
+  } # simple = FALSE
+   
   # return value 
   return(ret)
   
