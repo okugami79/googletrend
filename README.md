@@ -7,10 +7,12 @@ R package - importing Google trend data to your R session :)
 
 About
 ----
-Google trend is useful data source. Many 
-lead indicator data set 
+Google trend is useful data source among data science, which often used for obserbing real-time change of trends of public. Such as the change of people getting flu, market interest of product and so on. Source of information can be used to model your statistical analysis.  
 
-Have you got tired of clicking manual download of Googletrend data from the web site for your data analysis? This package help you importing data to R. 
+Googletrend package is written to download avialable data from Google in R session. This replaces the manual process of downloading CSV file, importing to R.   
+
+We recently added new google trend features, such google operator (keyword + keyword), google category, specifying the google trend. It allows to query the trend data fits to your data analysis.   
+
   
 Example 
 ----
